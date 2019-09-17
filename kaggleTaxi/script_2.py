@@ -1,11 +1,11 @@
-import csv
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data as Data
 import pandas as pd
 import numpy as np
+
+import utils
 
 BATCH_SIZE = 2000000
 CROSS_VALIDATION_NUM = 5
@@ -117,11 +117,4 @@ test_out = tnet(test_input)
 write_list = [['key', 'fare_amount'],]
 for key, out in zip(test_keys, test_out):
     write_list.append([key, out.item()])
-
-with open('result.csv', 'w', newline="") as w:
-    writer = csv.writer(w)
-    if write_list:
-        for line in write_list:
-            if line[0]:
-                line[0] = line[0].strip()
-            writer.writerow(line)
+utils.write_csv('result.csv', write_list)

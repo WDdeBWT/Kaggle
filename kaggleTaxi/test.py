@@ -1,9 +1,15 @@
-import utils
+import torch
 
-content_list = utils.read_csv('set100w.csv')
-for index, line in enumerate(content_list):
-    try:
-        if float(line[1]) < 1:
-            print('index: {} fare: {}'.format(index, line[1]))
-    except:
-        print(line)
+a = torch.randn(3, 1)
+b = torch.randn(3)
+print(a)
+print(b)
+
+e = []
+
+for c, d in zip(a, b):
+    e.append([c.item(), d])
+    # print(c)
+    # print(d)
+
+print(e)

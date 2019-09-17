@@ -99,5 +99,5 @@ class FCM:
             if abs(loss_old - loss_new) / loss_old < 0.0001:
                 print('(loss_old - loss_new) / loss_old < 0.01%, FCM finish')
                 break
-        print(best_membership_mat[0])
+        # print(best_membership_mat[0])
         return best_membership_mat

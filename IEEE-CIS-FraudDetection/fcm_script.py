@@ -101,10 +101,35 @@ df_id['DeviceType'] = df_id['DeviceType'].fillna(df_id['DeviceType'].mean()).ast
 
 del df_id['DeviceInfo']
 
-print('------------------------------')
-print(df_id)
-print('------------------------------')
-print(df_id.dtypes)
-print('------------------------------')
-print(df_id.info())
-print('------------------------------')
+# print('------------------------------')
+# print(df_id)
+# print('------------------------------')
+# print(df_id.dtypes)
+# print('------------------------------')
+# print(df_id.info())
+# print('------------------------------')
+
+np_data = df_id.values
+
+
+print('------------------------------------------------------------')
+print(np_data.shape)
+print(np_data[:, 1:].shape)
+
+fcm_model = FCM(np_data[:, 1:], 8, 30, show_detail=True)
+result = fcm_model.get_result()
+result = np.array(result)
+print('result.shape: {}'.format(result.shape))
+
+df_id['feature_0'] = result[:, 0]
+df_id['feature_1'] = result[:, 1]
+df_id['feature_2'] = result[:, 2]
+df_id['feature_3'] = result[:, 3]
+df_id['feature_4'] = result[:, 4]
+df_id['feature_5'] = result[:, 5]
+df_id['feature_6'] = result[:, 6]
+df_id['feature_7'] = result[:, 7]
+
+
+with open('reduce_mem_identity_with_feature.pkl', 'wb') as wb:
+    pickle.dump(df_id, wb)

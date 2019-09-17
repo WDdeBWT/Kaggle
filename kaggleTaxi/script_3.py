@@ -1,4 +1,4 @@
-import csv
+import time
 
 import torch
 import torch.nn as nn
@@ -6,6 +6,8 @@ import torch.nn.functional as F
 import torch.utils.data as Data
 import pandas as pd
 import numpy as np
+
+import utils
 
 BATCH_SIZE = 2000000
 CROSS_VALIDATION_NUM = 5
@@ -29,9 +31,11 @@ class TestNet(nn.Module):
 
 month_to_season = [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3]
 
-def csv_reader(read_path='file/train.csv', header=0, chunksize=5000000):
+def csv_reader(read_path='file/train.csv', header=0, chunksize=3000000):
     pd_reader = pd.read_csv(read_path, header=header, chunksize=chunksize)
     for chunk_index, chunk in enumerate(pd_reader):
+        if chunk_index >= 2:
+            return
         df = pd.DataFrame(chunk)
         df.rename(columns={'fare_amount': 'fare',
                         'pickup_datetime': 'datetime',
@@ -78,7 +82,7 @@ optimizer = torch.optim.Adam(tnet.parameters(), lr=0.02)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.2)
 loss_func = torch.nn.MSELoss()
 
-for epoch in range(25):
+for epoch in range(1):
     for step, (batch_x, batch_y) in enumerate(train_loader):
         batch_x = batch_x.cuda()
         batch_y = batch_y.cuda()
@@ -115,13 +119,11 @@ test_input = test_input[:, 3:]
 test_input = test_input.cuda()
 test_out = tnet(test_input)
 write_list = [['key', 'fare_amount'],]
+print('test_keys', test_keys.shape)
+print('test_out', test_out.shape)
+print('test_out[0]', test_out[0])
 for key, out in zip(test_keys, test_out):
     write_list.append([key, out.item()])
-
-with open('result.csv', 'w', newline="") as w:
-    writer = csv.writer(w)
-    if write_list:
-        for line in write_list:
-            if line[0]:
-                line[0] = line[0].strip()
-            writer.writerow(line)
+print(len(write_list))
+print(write_list[0])
+utils.write_csv('result.csv', write_list)
