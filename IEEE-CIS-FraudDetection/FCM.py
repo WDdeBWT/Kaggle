@@ -96,8 +96,8 @@ class FCM:
             if self.show_detail:
                 time_str = time.strftime("%H:%M:%S", time.localtime())
                 print('-time:{} - curr: {}/{} - loss: {}'.format(time_str, curr, self.max_iter, loss_new))
-            if abs(loss_old - loss_new) / loss_old < 0.0001:
-                print('(loss_old - loss_new) / loss_old < 0.01%, FCM finish')
-                break
+            # if abs(loss_old - loss_new) / loss_old < 0.0001:
+            #     print('(loss_old - loss_new) / loss_old < 0.01%, FCM finish')
+            #     break
         # print(best_membership_mat[0])
         return best_membership_mat

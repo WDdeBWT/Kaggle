@@ -116,7 +116,7 @@ print('------------------------------------------------------------')
 print(np_data.shape)
 print(np_data[:, 1:].shape)
 
-fcm_model = FCM(np_data[:, 1:], 8, 30, show_detail=True)
+fcm_model = FCM(np_data[:, 1:], 8, 20, show_detail=True)
 result = fcm_model.get_result()
 result = np.array(result)
 print('result.shape: {}'.format(result.shape))
