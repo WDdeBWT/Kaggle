@@ -15,7 +15,7 @@ with open('reduce_mem_test_transaction.pkl', 'rb') as rb:
     df_test_tr = pickle.load(rb)
 len_df_test_tr = len(df_test_tr)
 
-is_fraud = df_train_tr['isFraud']
+is_fraud = df_train_tr['isFraud'].copy()
 del df_train_tr['isFraud']
 df_tr = pd.concat([df_train_tr, df_test_tr])
 
@@ -58,6 +58,8 @@ print('------------------------------')
 df_train_tr = df_tr[:len_df_train_tr]
 df_test_tr = df_tr[len_df_train_tr:]
 assert len(df_test_tr) == len_df_test_tr
+
+df_train_tr['isFraud'] = is_fraud
 
 with open('processed_train_transaction.pkl', 'wb') as wb:
     pickle.dump(df_train_tr, wb)
